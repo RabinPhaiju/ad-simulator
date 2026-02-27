@@ -13,8 +13,9 @@
   var SPEED  = 30;   // ms per character (for reference)
   var DELAY1 = 800;  // delay before first animation starts
   var GAP    = 800;  // pause between phases
-  var WORDS_PER_STEP = 2; // Number of words to type at a time (e.g., 1, 2, or 3)
-  var STEP_INTERVAL = 150; // Delay between steps (ms)
+  var WORDS_PER_STEP = 3; // Number of words to type at a time (e.g., 1, 2, or 3)
+  var STEP_INTERVAL = 250; // Delay between steps (ms)
+  var SCROLL_SKIP_STEPS = 12; // Skip auto-scroll for the first N steps of typing
 
   // ── DOM helpers ──────────────────────────────────────────────────────────
 
@@ -30,10 +31,52 @@
     if (el) el.style.opacity = "1";
   }
 
-  /** Smoothly scroll the messages list to the bottom. */
-  function scrollChat() {
+  // ── Scroll tracking ─────────────────────────────────────────────────────
+  var userScrolledUp = false;
+
+  // Detect when user manually scrolls up
+  (function () {
     var list = document.getElementById("messages-list");
-    if (list) list.scrollTo({ top: list.scrollHeight, behavior: "smooth" });
+    if (!list) return;
+    list.addEventListener("scroll", function () {
+      var threshold = 30;
+      var isAtBottom = (list.scrollHeight - list.scrollTop) <= (list.clientHeight + threshold);
+      // If user scrolled away from bottom, mark it
+      if (!isAtBottom) {
+        userScrolledUp = true;
+      } else {
+        userScrolledUp = false;
+      }
+    });
+  })();
+
+  /** 
+   * Scroll the messages list to the bottom.
+   * Skips scrolling if user has manually scrolled up, unless forced.
+   */
+  function scrollChat(force, instant) {
+    if (userScrolledUp && !force) return;
+
+    var list = document.getElementById("messages-list");
+    if (!list) return;
+
+    // Check if content is actually clipped below the visible area
+    var listRect = list.getBoundingClientRect();
+    var listVisibleBottom = listRect.bottom;
+
+    // Get the bottom of the last element inside the list
+    var lastChild = list.lastElementChild;
+    if (!lastChild && !force) return;
+
+    var contentBottom = lastChild ? lastChild.getBoundingClientRect().bottom : 0;
+
+    // Only scroll if content is actually hidden below the visible area
+    if (force || contentBottom > listVisibleBottom) {
+      list.scrollTo({ 
+        top: list.scrollHeight, 
+        behavior: instant ? "auto" : "smooth" 
+      });
+    }
   }
 
   // ── Typing animation engine ──────────────────────────────────────────────
@@ -42,25 +85,31 @@
    * Type `text` word-by-word into the <p> identified by
    * `paragraphId`, placing each word before the cursor span
    * identified by `cursorId`. Calls `onDone` after finishing.
-   * Speed is 100ms per word for a faster feel.
    */
-  function typeWords(paragraphId, cursorId, text, onDone) {
+  function typeWords(paragraphId, cursorId, text, onDone, skipScroll) {
     var target = document.getElementById(paragraphId);
     var cursor = document.getElementById(cursorId);
-    var words = text.split(/\s+/).filter(Boolean); // split into words
+    var words = text.split(/\s+/).filter(Boolean);
     var index = 0;
+    var stepCount = 0;
 
     function step() {
       if (index < words.length) {
-        // Extract the next chunk of words
         var chunk = words.slice(index, index + WORDS_PER_STEP).join(' ') + ' ';
         target.insertBefore(document.createTextNode(chunk), cursor);
         
-        index += WORDS_PER_STEP;
-        scrollChat();
+        const randomDelay = Math.random() < 0.5 ? 0 : 1;
+
+        index += WORDS_PER_STEP + randomDelay;
+        stepCount++;
         setTimeout(step, STEP_INTERVAL); 
+        // Skip auto-scroll for first N steps only if skipScroll is true
+        if (!skipScroll || stepCount > SCROLL_SKIP_STEPS) {
+          scrollChat(false, true);
+        }
       } else {
         cursor.classList.add('done');
+        scrollChat(false, false); // Smooth scroll at end of typing
         if (onDone) setTimeout(onDone, GAP);
       }
     }
@@ -116,6 +165,7 @@
 
   function startSequence() {
     clearTimeouts();
+    userScrolledUp = false; // Reset scroll override on restart
     
     // Reset UI state
     setText("typing-response", "");
@@ -139,27 +189,27 @@
     // Phase 1: type first AI response
     var t1 = setTimeout(function () {
       typeWords('typing-response', 'typing-cursor', text1, function () {
-        scrollChat();
+        scrollChat(true); // Force scroll after long response
 
         // Phase 2: show user follow-up bubble
         fadeIn('follow-up-block');
-        scrollChat();
+        scrollChat(true); // Force scroll when new bubble appears
 
         var t2 = setTimeout(function () {
           // Phase 3: show second AI response block, then type
           fadeIn('ai-response-2-block');
-          scrollChat();
+          scrollChat(true); // Force scroll when AI response starts
 
           var t3 = setTimeout(function () {
             typeWords('typing-response-2', 'typing-cursor-2', text2, function() {
-              scrollChat();
+              scrollChat(true); // Final force scroll
               setText("credits-value", "1.2");
-            });
+            }, false);
           }, 400);
           activeTimeouts.push(t3);
         }, GAP);
         activeTimeouts.push(t2);
-      });
+      }, true);
     }, DELAY1);
     activeTimeouts.push(t1);
   }
