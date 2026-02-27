@@ -1,0 +1,23 @@
+/* =============================================================================
+   chat.css – Chat container, messages list, scrollbar, and input area
+   ============================================================================= */
+
+/* ── Chat background gradient ───────────────────────────────────────────────── */
+.chat-container {
+  background: linear-gradient(
+    rgb(255, 255, 255) -23.05%,
+    rgb(238, 242, 248) 47.88%,
+    rgb(214, 223, 238) 147.61%
+  );
+  background-attachment: fixed;
+}
+
+/* ── Messages list scrollbar: hidden but functional ─────────────────────────── */
+#messages-list::-webkit-scrollbar {
+  display: none;
+}
+
+#messages-list {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}

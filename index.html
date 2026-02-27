@@ -5,13 +5,13 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>PocketPandit AI</title>
 
-    <!-- Tailwind CSS (CDN) + custom config -->
+    <!-- ── Tailwind CSS (CDN) ──────────────────────────────────────────────── -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <script src="./tailwind-config.js"></script>
 
-    <!-- Google Fonts -->
+    <!-- ── Google Fonts ───────────────────────────────────────────────────── -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:wght@700&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -19,23 +19,35 @@
       rel="stylesheet"
     />
 
-    <!-- Custom styles -->
-    <link rel="stylesheet" href="./styles.css" />
+    <!-- ── Custom styles (split into focused files) ──────────────────────── -->
+    <link rel="stylesheet" href="./styles/base.css" />
+    <link rel="stylesheet" href="./styles/layout.css" />
+    <link rel="stylesheet" href="./styles/editor.css" />
+    <link rel="stylesheet" href="./styles/toggles.css" />
+    <link rel="stylesheet" href="./styles/chat.css" />
+    <link rel="stylesheet" href="./styles/animations.css" />
 
-    <!-- Dialog content (must load before app.js) -->
-    <script src="./dailogs.js"></script>
+    <!-- ── Dialog content (must load before app scripts) ────────────────── -->
+    <script src="./js/dialogs.js"></script>
   </head>
 
   <body
     class="bg-background-light dark:bg-background-dark font-sans text-slate-900 dark:text-slate-100 h-screen overflow-hidden"
   >
+    <!-- ════════════════════════════════════════════════════════════════════
+         APP CONTAINER – full-screen flex row split into:
+           Left  → mobile-view-wrapper (the phone preview)
+           Right → editor-panel       (the content editor)
+         ════════════════════════════════════════════════════════════════════ -->
     <div class="app-container">
-      <!-- Left side: Mobile preview -->
+      <!-- ══════════════════════════════════════════════════════════════════
+           LEFT PANE – Mobile phone preview
+           ══════════════════════════════════════════════════════════════════ -->
       <div class="mobile-view-wrapper">
         <main
           class="flex-1 flex flex-col items-center px-2 pt-4 pb-2 max-w-[380px] mx-auto w-full overflow-hidden"
         >
-          <!-- Page heading -->
+          <!-- ── Page heading ─────────────────────────────────────────────── -->
           <h1
             class="font-display text-4xl md:text-5xl text-center leading-tight mb-3 flex-shrink-0"
           >
@@ -47,27 +59,29 @@
             >
           </h1>
 
+          <!-- ── Chat container (rounded phone card) ─────────────────────── -->
           <div
             class="chat-container w-full bg-white dark:bg-slate-800 rounded-[32px] border-4 border-primary/20 shadow-xl flex-1 flex flex-col overflow-hidden mb-2"
           >
-            <!-- App header row -->
+            <!-- ── App header row (logo / credits / notifications) ──────── -->
             <div
               class="flex items-center justify-between px-4 pt-0 pb-0 border-b border-slate-100 dark:border-slate-700 flex-shrink-0"
             >
-              <!-- Left: Logo -->
+              <!-- Logo -->
               <img
                 src="./banner_logo.png"
                 alt="Pocket Pandit"
                 class="h-14 p-1 w-auto object-contain"
               />
 
-              <!-- Center: Credits pill -->
+              <!-- Credits pill -->
               <div
                 class="flex items-center bg-slate-200 dark:bg-slate-700 rounded-full px-2 py-1.5 space-x-2"
               >
                 <div
                   class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 shadow"
                 >
+                  <!-- Coin / credit icon SVG -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="18"
@@ -117,7 +131,7 @@
                 >
               </div>
 
-              <!-- Right: Bell + Avatar -->
+              <!-- Bell + Avatar -->
               <div class="flex items-center space-x-2.5">
                 <div class="relative">
                   <span class="material-symbols-rounded text-slate-500 text-2xl"
@@ -135,13 +149,20 @@
                 </div>
               </div>
             </div>
+            <!-- /app header row -->
 
-            <!-- Chat messages area -->
+            <!-- ── Messages list (scrollable) ─────────────────────────────── -->
+            <!--
+              Each message row has a semantic class:
+                .user-msg-row  → a user message bubble
+                .ai-msg-row    → an AI message bubble
+              These are targeted by the AI Position toggle CSS in toggles.css.
+            -->
             <div
               id="messages-list"
               class="flex-1 py-2 px-3 space-y-3 overflow-y-auto"
             >
-              <!-- User message 1 -->
+              <!-- ── User message 1 ────────────────────────────────────── -->
               <div
                 id="user-msg-1-block"
                 class="user-msg-row flex items-start space-x-3"
@@ -167,7 +188,7 @@
                 </div>
               </div>
 
-              <!-- User message: birth details -->
+              <!-- ── User message 2: birth details ─────────────────────── -->
               <div
                 id="birth-block"
                 class="user-msg-row flex items-start space-x-3"
@@ -195,12 +216,17 @@
                 </div>
               </div>
 
-              <!-- AI response 1 (typed) -->
+              <!-- ── AI response 1 (typed animation) ───────────────────── -->
+              <!--
+                pl-3 provides left-padding gap between avatar and bubble.
+                When AI position is toggled, CSS swaps it to pr-3 (see toggles.css).
+              -->
               <div class="ai-msg-row flex items-start pl-3">
                 <div class="flex-1">
                   <div
                     class="bg-ai-bubble text-slate-800 p-2 px-2 rounded-chat rounded-tr-none shadow-lg"
                   >
+                    <!-- Chart image (toggle-chart hides/shows this) -->
                     <div id="chart-block" class="mb-2 overflow-hidden">
                       <img
                         src="./chart.png"
@@ -208,6 +234,7 @@
                         class="w-full h-auto object-cover"
                       />
                     </div>
+                    <!-- Typing target: words are inserted before the cursor span -->
                     <p
                       id="typing-response"
                       class="text-[15px] leading-relaxed font-medium"
@@ -216,6 +243,7 @@
                     </p>
                   </div>
                 </div>
+                <!-- AI avatar -->
                 <div
                   class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200 flex items-center justify-center"
                 >
@@ -227,7 +255,7 @@
                 </div>
               </div>
 
-              <!-- User follow-up (fades in after AI response 1) -->
+              <!-- ── User follow-up bubble (fades in after AI response 1) ─ -->
               <div
                 id="follow-up-block"
                 class="user-msg-row flex items-start space-x-3 opacity-0"
@@ -254,7 +282,7 @@
                 </div>
               </div>
 
-              <!-- AI response 2 (typed, fades in after follow-up) -->
+              <!-- ── AI response 2 (fades in after follow-up, then typed) ─ -->
               <div
                 id="ai-response-2-block"
                 class="ai-msg-row flex items-start space-x-3 opacity-0 pl-3"
@@ -272,6 +300,7 @@
                     </p>
                   </div>
                 </div>
+                <!-- AI avatar -->
                 <div
                   class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200 flex items-center justify-center"
                 >
@@ -283,8 +312,9 @@
                 </div>
               </div>
             </div>
+            <!-- /messages-list -->
 
-            <!-- Sticky input field at bottom of container -->
+            <!-- ── Sticky chat input bar ───────────────────────────────── -->
             <div class="px-1 pb-2 pt-1 flex-shrink-0">
               <div class="relative flex items-center">
                 <input
@@ -293,6 +323,7 @@
                   placeholder=""
                   class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-full py-3 pl-2 pr-8 text-[12px] focus:outline-none focus:border-primary/50 transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500"
                 />
+                <!-- Send button -->
                 <button
                   class="absolute right-2 p-2 text-slate-400 hover:text-primary transition-colors"
                 >
@@ -313,23 +344,34 @@
                 </button>
               </div>
             </div>
+            <!-- /chat input bar -->
           </div>
+          <!-- /chat-container -->
 
+          <!-- ── CTA button (below the phone card) ──────────────────────── -->
           <button
             id="cta-button"
             class="w-full bg-primary hover:bg-opacity-90 active:scale-95 transition-all text-white font-bold py-3 rounded-full text-base shadow-lg"
           ></button>
         </main>
       </div>
+      <!-- /mobile-view-wrapper -->
 
-      <!-- Right side: Content Editor -->
+      <!-- ══════════════════════════════════════════════════════════════════
+           RIGHT PANE – Content editor panel
+           ══════════════════════════════════════════════════════════════════ -->
       <aside class="editor-panel">
         <h2 class="editor-title">Content Editor</h2>
         <p class="text-slate-500 -mt-4 text-sm">
           Edit the text below to see live updates in the mobile view.
         </p>
 
-        <!-- AI Position Toggle -->
+        <!-- ── AI Response Position toggle ─────────────────────────────── -->
+        <!--
+          Checked  = AI on LEFT  (default)
+          Unchecked = AI on RIGHT
+          JS in editor.js applies/removes .ai-on-left on #messages-list.
+        -->
         <div class="toggle-row">
           <label class="toggle-label">AI Response Position</label>
           <div class="toggle-container">
@@ -342,7 +384,11 @@
           </div>
         </div>
 
-        <!-- Visibility Toggles -->
+        <!-- ── Visibility toggles ──────────────────────────────────────── -->
+        <!--
+          Each toggle calls bindVisibilityToggle() in editor.js
+          to show/hide the associated element.
+        -->
         <div class="toggle-row">
           <label class="toggle-label">Show / Hide</label>
 
@@ -381,6 +427,7 @@
 
         <hr class="border-slate-200" />
 
+        <!-- ── Page content fields ─────────────────────────────────────── -->
         <div class="editor-field">
           <label>Page Title</label>
           <input
@@ -416,6 +463,7 @@
 
         <hr class="border-slate-200" />
 
+        <!-- ── User conversation fields ───────────────────────────────── -->
         <div class="editor-field">
           <label>User Message 1</label>
           <textarea data-dialog="USER_MSG_1" rows="2"></textarea>
@@ -431,21 +479,21 @@
 
         <hr class="border-slate-200" />
 
+        <!-- ── AI response fields ─────────────────────────────────────── -->
         <div class="editor-field">
           <label>AI Response 1 (Typing Animation)</label>
           <textarea data-dialog="AI_RESPONSE_1" rows="5"></textarea>
         </div>
-
         <div class="editor-field">
           <label>User Message 2 (Follow-up)</label>
           <textarea data-dialog="USER_MSG_2" rows="2"></textarea>
         </div>
-
         <div class="editor-field">
           <label>AI Response 2 (Typing Animation)</label>
           <textarea data-dialog="AI_RESPONSE_2" rows="5"></textarea>
         </div>
 
+        <!-- ── Restart animation button ───────────────────────────────── -->
         <div
           id="restart-animation"
           class="restart-btn flex items-center justify-center gap-2"
@@ -454,9 +502,25 @@
           Restart Animation
         </div>
       </aside>
+      <!-- /editor-panel -->
     </div>
+    <!-- /app-container -->
 
-    <!-- Application logic (must load after DOM is ready) -->
-    <script src="./app.js"></script>
+    <!-- ════════════════════════════════════════════════════════════════════
+         SCRIPTS – Load order matters:
+           1. config.js      → CONFIG constants
+           2. dialogs.js     → DIALOGS text content  (already in <head>)
+           3. dom-helpers.js → setText, fadeIn
+           4. scroll.js      → userScrolledUp, scrollChat
+           5. typing.js      → typeWords  (needs CONFIG + scrollChat)
+           6. editor.js      → initEditor (needs DIALOGS + setText)
+           7. app.js         → entry point, calls everything above
+         ════════════════════════════════════════════════════════════════════ -->
+    <script src="./js/config.js"></script>
+    <script src="./js/dom-helpers.js"></script>
+    <script src="./js/scroll.js"></script>
+    <script src="./js/typing.js"></script>
+    <script src="./js/editor.js"></script>
+    <script src="./js/app.js"></script>
   </body>
 </html>

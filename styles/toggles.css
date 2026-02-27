@@ -1,0 +1,139 @@
+/* =============================================================================
+   toggles.css – Toggle switch UI component + AI position swap rules
+   ============================================================================= */
+
+/* ── Toggle row container ───────────────────────────────────────────────────── */
+.toggle-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.4rem 0.825rem;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+/* Section label above toggles */
+.toggle-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── Right/Left position label text ────────────────────────────────────────── */
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.toggle-option {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #94a3b8;
+  transition: color 0.2s;
+}
+
+.toggle-option.active {
+  color: #1e293b;
+  font-weight: 700;
+}
+
+/* ── Toggle switch (pill + knob) ────────────────────────────────────────────── */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Hide native checkbox */
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The pill track */
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cbd5e1;
+  border-radius: 24px;
+  transition: background-color 0.3s;
+}
+
+/* The round knob */
+.toggle-slider::before {
+  content: "";
+  position: absolute;
+  height: 12px;
+  width: 12px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* Checked state: blue track */
+.toggle-switch input:checked + .toggle-slider {
+  background-color: #007AFF;
+}
+
+/* Checked state: slide knob to the right */
+.toggle-switch input:checked + .toggle-slider::before {
+  transform: translateX(14px);
+}
+
+/* =============================================================================
+   AI Position Swap – applied when `#messages-list` has class `.ai-on-left`
+   ============================================================================= */
+
+/* ── User messages: default LEFT → swap to RIGHT ────────────────────────────── */
+.ai-on-left .user-msg-row {
+  flex-direction: row-reverse;
+  gap: 0.75rem; /* replaces broken space-x margin */
+}
+
+/* Neutralise Tailwind space-x margin-left (incompatible with row-reverse) */
+.ai-on-left .user-msg-row > * + * {
+  margin-left: 0;
+}
+
+/* Flat corner flips: top-left → top-right (always points at avatar) */
+.ai-on-left .user-msg-row .rounded-tl-none {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 0;
+}
+
+/* ── AI messages: default RIGHT → swap to LEFT ──────────────────────────────── */
+.ai-on-left .ai-msg-row {
+  flex-direction: row-reverse;
+  gap: 0.5rem;
+}
+
+/* Neutralise Tailwind space-x margin-left */
+.ai-on-left .ai-msg-row > * + * {
+  margin-left: 0;
+}
+
+/* Flat corner flips: top-right → top-left */
+.ai-on-left .ai-msg-row .rounded-tr-none {
+  border-top-right-radius: 1rem;
+  border-top-left-radius: 0;
+}
+
+/* Padding swap: pl-3 on row becomes pr-3 when reversed */
+.ai-on-left .ai-msg-row.pl-3 {
+  padding-left: 0 !important;
+  padding-right: 0.75rem;
+}

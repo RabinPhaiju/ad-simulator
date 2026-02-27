@@ -1,0 +1,40 @@
+/* =============================================================================
+   layout.css – App-level split-pane layout (mobile preview + editor panel)
+   ============================================================================= */
+
+/* Full-screen split container */
+.app-container {
+  display: flex;
+  width: 100vw;
+  height: 100dvh;
+}
+
+/* ── Left pane: mobile preview ─────────────────────────────────────────────── */
+.mobile-view-wrapper {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-right: 1px solid rgba(0,0,0,0.1);
+  background: white;
+}
+
+/* ── Right pane: content editor ────────────────────────────────────────────── */
+.editor-panel {
+  flex: 1;
+  height: 100%;
+  padding: 2rem;
+  overflow-y: auto;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.editor-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
