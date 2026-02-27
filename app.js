@@ -37,24 +37,25 @@
   // ── Typing animation engine ──────────────────────────────────────────────
 
   /**
-   * Type `text` character-by-character into the <p> identified by
-   * `paragraphId`, placing each character before the cursor span
+   * Type `text` word-by-word into the <p> identified by
+   * `paragraphId`, placing each word before the cursor span
    * identified by `cursorId`. Calls `onDone` after finishing.
+   * Speed is 100ms per word for a faster feel.
    */
-  function typeInto(paragraphId, cursorId, text, onDone) {
+  function typeWords(paragraphId, cursorId, text, onDone) {
     var target = document.getElementById(paragraphId);
     var cursor = document.getElementById(cursorId);
-    var chars  = Array.from(text);   // supports Unicode correctly
-    var index  = 0;
+    var words = text.split(/\s+/).filter(Boolean); // split into words
+    var index = 0;
 
     function step() {
-      if (index < chars.length) {
-        target.insertBefore(document.createTextNode(chars[index]), cursor);
+      if (index < words.length) {
+        target.insertBefore(document.createTextNode(words[index] + ' '), cursor);
         index++;
         scrollChat();
-        setTimeout(step, SPEED);
+        setTimeout(step, 100); // 100ms per word
       } else {
-        cursor.classList.add("done");
+        cursor.classList.add('done');
         if (onDone) setTimeout(onDone, GAP);
       }
     }
@@ -72,26 +73,33 @@
   setText("user-birthplace", D.USER_BIRTHPLACE);
   setText("user-msg-2",      D.USER_MSG_2);
 
+  // Set input placeholder
+  var inputField = document.getElementById("chat-input-field");
+  if (inputField && D.INPUT_PLACEHOLDER) {
+    inputField.placeholder = D.INPUT_PLACEHOLDER;
+  }
+
   // ── Animation sequence ───────────────────────────────────────────────────
   var text1 = D.AI_RESPONSE_1 || "";
   var text2 = D.AI_RESPONSE_2 || "";
 
+  // Use the new word-based typing function
   // Phase 1: type first AI response
   setTimeout(function () {
-    typeInto("typing-response", "typing-cursor", text1, function () {
+    typeWords('typing-response', 'typing-cursor', text1, function () {
       scrollChat();
 
       // Phase 2: show user follow-up bubble
-      fadeIn("follow-up-block");
+      fadeIn('follow-up-block');
       scrollChat();
 
       setTimeout(function () {
         // Phase 3: show second AI response block, then type
-        fadeIn("ai-response-2-block");
+        fadeIn('ai-response-2-block');
         scrollChat();
 
         setTimeout(function () {
-          typeInto("typing-response-2", "typing-cursor-2", text2, scrollChat);
+          typeWords('typing-response-2', 'typing-cursor-2', text2, scrollChat);
         }, 400);
       }, GAP);
     });

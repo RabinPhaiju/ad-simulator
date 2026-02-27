@@ -8,12 +8,14 @@ tailwind.config = {
   theme: {
     extend: {
       colors: {
-        primary: "#007AFF",
+        primary: "rgb(76, 42, 149)",
         "background-light": "#F5F5F7",
         "background-dark": "#1C1C1E",
         "accent-blue": "#007AFF",
         "bubble-beige": "#F9F9FB",
         "bubble-brown": "#8B5E3C",
+        "user-bubble": "rgb(76, 42, 149)",
+        "ai-bubble": "rgb(228, 230, 235)",
       },
       fontFamily: {
         display: ["Playfair Display", "serif"],

@@ -14,6 +14,9 @@ var DIALOGS = {
   // CTA button
   CTA_BUTTON:     "First few questions are free.",
 
+  // Input Placeholder
+  INPUT_PLACEHOLDER: "Ask anything astrological, in your preferred language",
+
   // ── Turn 1 ──────────────────────────────────────────────────────────────
 
   // User's first message
