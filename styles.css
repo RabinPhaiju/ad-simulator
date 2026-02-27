@@ -1,6 +1,89 @@
-/* ─────────────────────────────────────────────────────────────────────────────
- * styles.css  –  Custom styles for PocketPandit AI chat interface.
- * ───────────────────────────────────────────────────────────────────────────── */
+/* ── Split Layout ─────────────────────────────────────────────────────────── */
+.app-container {
+  display: flex;
+  width: 100vw;
+  height: 100dvh;
+}
+
+.mobile-view-wrapper {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-right: 1px solid rgba(0,0,0,0.1);
+  background: white; /* Base background for the mobile side */
+}
+
+.editor-panel {
+  flex: 1;
+  height: 100%;
+  padding: 2rem;
+  overflow-y: auto;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.editor-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.editor-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.editor-field label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.editor-field input, .editor-field textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  color: #334155;
+  background: white;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.editor-field input:focus, .editor-field textarea:focus {
+  outline: none;
+  border-color: #007AFF;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.restart-btn {
+  background: #007AFF;
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.1s, opacity 0.2s;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.restart-btn:hover {
+  opacity: 0.9;
+}
+
+.restart-btn:active {
+  transform: scale(0.98);
+}
+
 
 /* ── Base ──────────────────────────────────────────────────────────────────── */
 body {

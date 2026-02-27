@@ -27,278 +27,369 @@
   </head>
 
   <body
-    class="bg-background-light dark:bg-background-dark font-sans text-slate-900 dark:text-slate-100 h-screen flex flex-col overflow-hidden"
+    class="bg-background-light dark:bg-background-dark font-sans text-slate-900 dark:text-slate-100 h-screen overflow-hidden"
   >
-    <main
-      class="flex-1 flex flex-col items-center px-2 pt-4 pb-2 max-w-[380px] mx-auto w-full overflow-hidden"
-    >
-      <!-- Page heading -->
-      <h1
-        class="font-display text-4xl md:text-5xl text-center leading-tight mb-3 flex-shrink-0"
-      >
-        <span class="block text-slate-900 dark:text-white" id="page-title"
-          >Will I get</span
+    <div class="app-container">
+      <!-- Left side: Mobile preview -->
+      <div class="mobile-view-wrapper">
+        <main
+          class="flex-1 flex flex-col items-center px-2 pt-4 pb-2 max-w-[380px] mx-auto w-full overflow-hidden"
         >
-        <span class="block text-primary" id="page-subtitle"
-          >Australian visa?</span
-        >
-      </h1>
-
-      <div
-        class="chat-container w-full bg-white dark:bg-slate-800 rounded-[32px] border-4 border-primary/20 shadow-xl flex-1 flex flex-col overflow-hidden mb-4"
-      >
-        <!-- App header row -->
-        <div
-          class="flex items-center justify-between px-4 pt-0 pb-0 border-b border-slate-100 dark:border-slate-700 flex-shrink-0"
-        >
-          <!-- Left: Logo -->
-          <img
-            src="./banner_logo.png"
-            alt="Pocket Pandit"
-            class="h-14 p-1 w-auto object-contain"
-          />
-
-          <!-- Center: Credits pill -->
-          <div
-            class="flex items-center bg-slate-200 dark:bg-slate-700 rounded-full px-2 py-1.5 space-x-2"
+          <!-- Page heading -->
+          <h1
+            class="font-display text-4xl md:text-5xl text-center leading-tight mb-3 flex-shrink-0"
           >
-            <div
-              class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 shadow"
+            <span class="block text-slate-900 dark:text-white" id="page-title"
+              >Will I get</span
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
-                viewBox="0 0 25 25"
-                fill="none"
-              >
-                <rect
-                  x="0.5"
-                  y="0.563965"
-                  width="24"
-                  height="24"
-                  rx="12"
-                  fill="#F2994A"
-                ></rect>
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M17.0262 7.30199H13.6135V10.7147H17.0262V7.30199ZM12.1152 5.80371V12.213H18.5245V5.80371H12.1152Z"
-                  fill="black"
-                ></path>
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M11.3856 12.0232H7.97289V15.4359H11.3856V12.0232ZM6.47461 10.5249V16.9342H12.8839V10.5249H6.47461Z"
-                  fill="black"
-                ></path>
-                <path
-                  d="M6.47461 15.5811H7.89721V19.3243H6.47461V15.5811Z"
-                  fill="black"
-                ></path>
-              </svg>
-            </div>
-            <div class="flex flex-col leading-none">
-              <span
-                class="font-bold text-xs text-slate-900 dark:text-white tracking-tight"
-                >2.0</span
-              >
-              <span
-                class="text-[8px] font-semibold text-slate-500 dark:text-slate-400 tracking-widest uppercase"
-                >Credits</span
-              >
-            </div>
-            <span class="text-slate-500 font-bold text-sm leading-none">+</span>
-          </div>
+            <span class="block text-primary" id="page-subtitle"
+              >Australian visa?</span
+            >
+          </h1>
 
-          <!-- Right: Bell + Avatar -->
-          <div class="flex items-center space-x-2.5">
-            <div class="relative">
-              <span class="material-symbols-rounded text-slate-500 text-2xl"
-                >notifications</span
-              >
-            </div>
+          <div
+            class="chat-container w-full bg-white dark:bg-slate-800 rounded-[32px] border-4 border-primary/20 shadow-xl flex-1 flex flex-col overflow-hidden mb-2"
+          >
+            <!-- App header row -->
             <div
-              class="w-8 h-8 rounded-full bg-slate-300 border-2 border-slate-400 overflow-hidden flex items-center justify-center"
+              class="flex items-center justify-between px-4 pt-0 pb-0 border-b border-slate-100 dark:border-slate-700 flex-shrink-0"
             >
+              <!-- Left: Logo -->
               <img
-                alt="User profile"
-                class="w-full h-full object-cover"
-                src="./person.avif"
+                src="./banner_logo.png"
+                alt="Pocket Pandit"
+                class="h-14 p-1 w-auto object-contain"
               />
-            </div>
-          </div>
-        </div>
 
-        <!-- Chat messages area -->
-        <div
-          id="messages-list"
-          class="flex-1 py-2 px-3 space-y-3 overflow-y-auto"
-        >
-          <!-- User message 1 -->
-          <div class="flex items-start space-x-3">
-            <div
-              class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200"
-            >
-              <img
-                alt="User profile"
-                class="w-full h-full object-cover"
-                src="./person.avif"
-              />
-            </div>
-            <div class="space-y-2 max-w-[80%]">
+              <!-- Center: Credits pill -->
               <div
-                class="bg-user-bubble p-2 px-4 rounded-chat rounded-tl-none shadow-sm flex items-center space-x-1"
+                class="flex items-center bg-slate-200 dark:bg-slate-700 rounded-full px-2 py-1.5 space-x-2"
               >
-                <p class="text-[15px] leading-relaxed text-white">
-                  मेरो अष्ट्रेलियन भिसा कहिले लाग्छ? 😭
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- User message: birth details -->
-          <div class="flex items-start space-x-3">
-            <div
-              class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200"
-            >
-              <img
-                alt="User profile"
-                class="w-full h-full object-cover"
-                src="./person.avif"
-              />
-            </div>
-            <div class="space-y-2 max-w-[80%]">
-              <div
-                class="bg-user-bubble p-2 px-4 rounded-chat rounded-tl-none shadow-sm"
-              >
-                <p class="text-[15px] leading-relaxed text-white font-medium">
-                  January 12, 2006, 10am<br />
-                  Kathmandu, Nepal
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- AI response 1 (typed) -->
-          <div class="flex items-start space-x-2">
-            <div class="flex-1 pl-3">
-              <div
-                class="bg-ai-bubble text-slate-800 p-2 px-2 rounded-chat rounded-tr-none shadow-lg"
-              >
-                <p
-                  id="typing-response"
-                  class="text-[15px] leading-relaxed font-medium"
+                <div
+                  class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 shadow"
                 >
-                  <span class="typing-cursor" id="typing-cursor"></span>
-                </p>
-              </div>
-            </div>
-            <div
-              class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200 flex items-center justify-center"
-            >
-              <img
-                alt="AI profile"
-                class="w-10 h-10 object-contain mix-blend-multiply"
-                src="./logo.png"
-              />
-            </div>
-          </div>
-
-          <!-- User follow-up (fades in after AI response 1) -->
-          <div
-            id="follow-up-block"
-            class="flex items-start space-x-3 opacity-0"
-            style="transition: opacity 0.5s ease"
-          >
-            <div
-              class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200"
-            >
-              <img
-                alt="User profile"
-                class="w-full h-full object-cover"
-                src="./person.avif"
-              />
-            </div>
-            <div class="space-y-2 max-w-[80%]">
-              <div
-                class="bg-user-bubble p-2 px-4 rounded-chat rounded-tl-none shadow-sm flex items-center space-x-1"
-              >
-                <p
-                  class="text-[15px] leading-relaxed text-white"
-                  id="user-msg-2"
-                ></p>
-              </div>
-            </div>
-          </div>
-
-          <!-- AI response 2 (typed, fades in after follow-up) -->
-          <div
-            id="ai-response-2-block"
-            class="flex items-start space-x-3 opacity-0"
-            style="transition: opacity 0.5s ease"
-          >
-            <div class="flex-1 pl-3">
-              <div
-                class="bg-ai-bubble text-slate-800 p-2 px-2 rounded-chat rounded-tr-none shadow-lg"
-              >
-                <p
-                  id="typing-response-2"
-                  class="text-[15px] leading-relaxed font-medium"
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 25 25"
+                    fill="none"
+                  >
+                    <rect
+                      x="0.5"
+                      y="0.563965"
+                      width="24"
+                      height="24"
+                      rx="12"
+                      fill="#F2994A"
+                    ></rect>
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M17.0262 7.30199H13.6135V10.7147H17.0262V7.30199ZM12.1152 5.80371V12.213H18.5245V5.80371H12.1152Z"
+                      fill="black"
+                    ></path>
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M11.3856 12.0232H7.97289V15.4359H11.3856V12.0232ZM6.47461 10.5249V16.9342H12.8839V10.5249H6.47461Z"
+                      fill="black"
+                    ></path>
+                    <path
+                      d="M6.47461 15.5811H7.89721V19.3243H6.47461V15.5811Z"
+                      fill="black"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="flex flex-col leading-none">
+                  <span
+                    id="credits-value"
+                    class="font-bold text-xs text-slate-900 dark:text-white tracking-tight"
+                    >2.0</span
+                  >
+                  <span
+                    class="text-[8px] font-semibold text-slate-500 dark:text-slate-400 tracking-widest uppercase"
+                    >Credits</span
+                  >
+                </div>
+                <span class="text-slate-500 font-bold text-sm leading-none"
+                  >+</span
                 >
-                  <span class="typing-cursor" id="typing-cursor-2"></span>
-                </p>
+              </div>
+
+              <!-- Right: Bell + Avatar -->
+              <div class="flex items-center space-x-2.5">
+                <div class="relative">
+                  <span class="material-symbols-rounded text-slate-500 text-2xl"
+                    >notifications</span
+                  >
+                </div>
+                <div
+                  class="w-8 h-8 rounded-full bg-slate-300 border-2 border-slate-400 overflow-hidden flex items-center justify-center"
+                >
+                  <img
+                    alt="User profile"
+                    class="w-full h-full object-cover"
+                    src="./person.avif"
+                  />
+                </div>
               </div>
             </div>
+
+            <!-- Chat messages area -->
             <div
-              class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200 flex items-center justify-center"
+              id="messages-list"
+              class="flex-1 py-2 px-3 space-y-3 overflow-y-auto"
             >
-              <img
-                alt="AI profile"
-                class="w-10 h-10 object-contain mix-blend-multiply"
-                src="./logo.png"
-              />
+              <!-- User message 1 -->
+              <div class="flex items-start space-x-3">
+                <div
+                  class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200"
+                >
+                  <img
+                    alt="User profile"
+                    class="w-full h-full object-cover"
+                    src="./person.avif"
+                  />
+                </div>
+                <div class="space-y-2 max-w-[80%]">
+                  <div
+                    class="bg-user-bubble p-2 px-4 rounded-chat rounded-tl-none shadow-sm flex items-center space-x-1"
+                  >
+                    <p
+                      id="user-msg-1"
+                      class="text-[15px] leading-relaxed text-white"
+                    ></p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- User message: birth details -->
+              <div class="flex items-start space-x-3">
+                <div
+                  class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200"
+                >
+                  <img
+                    alt="User profile"
+                    class="w-full h-full object-cover"
+                    src="./person.avif"
+                  />
+                </div>
+                <div class="space-y-2 max-w-[80%]">
+                  <div
+                    class="bg-user-bubble p-2 px-4 rounded-chat rounded-tl-none shadow-sm"
+                  >
+                    <p
+                      class="text-[15px] leading-relaxed text-white font-medium"
+                    >
+                      <span id="user-birthdate"></span><br />
+                      <span id="user-birthplace"></span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- AI response 1 (typed) -->
+              <div class="flex items-start space-x-2">
+                <div class="flex-1 pl-3">
+                  <div
+                    class="bg-ai-bubble text-slate-800 p-2 px-2 rounded-chat rounded-tr-none shadow-lg"
+                  >
+                    <p
+                      id="typing-response"
+                      class="text-[15px] leading-relaxed font-medium"
+                    >
+                      <span class="typing-cursor" id="typing-cursor"></span>
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200 flex items-center justify-center"
+                >
+                  <img
+                    alt="AI profile"
+                    class="w-10 h-10 object-contain mix-blend-multiply"
+                    src="./logo.png"
+                  />
+                </div>
+              </div>
+
+              <!-- User follow-up (fades in after AI response 1) -->
+              <div
+                id="follow-up-block"
+                class="flex items-start space-x-3 opacity-0"
+                style="transition: opacity 0.5s ease"
+              >
+                <div
+                  class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200"
+                >
+                  <img
+                    alt="User profile"
+                    class="w-full h-full object-cover"
+                    src="./person.avif"
+                  />
+                </div>
+                <div class="space-y-2 max-w-[80%]">
+                  <div
+                    class="bg-user-bubble p-2 px-4 rounded-chat rounded-tl-none shadow-sm flex items-center space-x-1"
+                  >
+                    <p
+                      class="text-[15px] leading-relaxed text-white"
+                      id="user-msg-2"
+                    ></p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- AI response 2 (typed, fades in after follow-up) -->
+              <div
+                id="ai-response-2-block"
+                class="flex items-start space-x-3 opacity-0"
+                style="transition: opacity 0.5s ease"
+              >
+                <div class="flex-1 pl-3">
+                  <div
+                    class="bg-ai-bubble text-slate-800 p-2 px-2 rounded-chat rounded-tr-none shadow-lg"
+                  >
+                    <p
+                      id="typing-response-2"
+                      class="text-[15px] leading-relaxed font-medium"
+                    >
+                      <span class="typing-cursor" id="typing-cursor-2"></span>
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200 flex items-center justify-center"
+                >
+                  <img
+                    alt="AI profile"
+                    class="w-10 h-10 object-contain mix-blend-multiply"
+                    src="./logo.png"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Sticky input field at bottom of container -->
+            <div class="px-1 pb-2 pt-1 flex-shrink-0">
+              <div class="relative flex items-center">
+                <input
+                  type="text"
+                  id="chat-input-field"
+                  placeholder=""
+                  class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-full py-3 pl-2 pr-8 text-[12px] focus:outline-none focus:border-primary/50 transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500"
+                />
+                <button
+                  class="absolute right-2 p-2 text-slate-400 hover:text-primary transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Sticky input field at bottom of container -->
-        <div class="px-1 pb-2 pt-1 flex-shrink-0">
-          <div class="relative flex items-center">
-            <input
-              type="text"
-              id="chat-input-field"
-              placeholder=""
-              class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-full py-3 pl-2 pr-8 text-[12px] focus:outline-none focus:border-primary/50 transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500"
-            />
-            <button
-              class="absolute right-2 p-2 text-slate-400 hover:text-primary transition-colors"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <line x1="22" y1="2" x2="11" y2="13"></line>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-              </svg>
-            </button>
-          </div>
-        </div>
+          <button
+            id="cta-button"
+            class="w-full bg-primary hover:bg-opacity-90 active:scale-95 transition-all text-white font-bold py-3 rounded-full text-base shadow-lg"
+          ></button>
+        </main>
       </div>
 
-      <div class="w-full flex items-center justify-between px-2"></div>
-      <button
-        id="cta-button"
-        class="w-full bg-primary hover:bg-opacity-90 active:scale-95 transition-all text-white font-bold py-4 rounded-full text-lg shadow-lg"
-      ></button>
-    </main>
+      <!-- Right side: Content Editor -->
+      <aside class="editor-panel">
+        <h2 class="editor-title">Content Editor</h2>
+        <p class="text-slate-500 -mt-4 mb-4 text-sm">
+          Edit the text below to see live updates in the mobile view.
+        </p>
+
+        <div class="editor-field">
+          <label>Page Title</label>
+          <input
+            type="text"
+            data-dialog="PAGE_TITLE"
+            placeholder="Will I get"
+          />
+        </div>
+        <div class="editor-field">
+          <label>Page Subtitle</label>
+          <input
+            type="text"
+            data-dialog="PAGE_SUBTITLE"
+            placeholder="Australian visa?"
+          />
+        </div>
+        <div class="editor-field">
+          <label>CTA Button</label>
+          <input
+            type="text"
+            data-dialog="CTA_BUTTON"
+            placeholder="First few questions are free."
+          />
+        </div>
+        <div class="editor-field">
+          <label>Input Placeholder</label>
+          <input
+            type="text"
+            data-dialog="INPUT_PLACEHOLDER"
+            placeholder="Ask anything astrological..."
+          />
+        </div>
+
+        <hr class="border-slate-200" />
+
+        <div class="editor-field">
+          <label>User Message 1</label>
+          <textarea data-dialog="USER_MSG_1" rows="2"></textarea>
+        </div>
+        <div class="editor-field">
+          <label>Birth Date</label>
+          <input type="text" data-dialog="USER_BIRTHDATE" />
+        </div>
+        <div class="editor-field">
+          <label>Birth Place</label>
+          <input type="text" data-dialog="USER_BIRTHPLACE" />
+        </div>
+
+        <hr class="border-slate-200" />
+
+        <div class="editor-field">
+          <label>AI Response 1 (Typing Animation)</label>
+          <textarea data-dialog="AI_RESPONSE_1" rows="5"></textarea>
+        </div>
+
+        <div class="editor-field">
+          <label>User Message 2 (Follow-up)</label>
+          <textarea data-dialog="USER_MSG_2" rows="2"></textarea>
+        </div>
+
+        <div class="editor-field">
+          <label>AI Response 2 (Typing Animation)</label>
+          <textarea data-dialog="AI_RESPONSE_2" rows="5"></textarea>
+        </div>
+
+        <div
+          id="restart-animation"
+          class="restart-btn flex items-center justify-center gap-2"
+        >
+          <span class="material-symbols-rounded">replay</span>
+          Restart Animation
+        </div>
+      </aside>
+    </div>
 
     <!-- Application logic (must load after DOM is ready) -->
     <script src="./app.js"></script>
