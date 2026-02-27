@@ -142,7 +142,10 @@
               class="flex-1 py-2 px-3 space-y-3 overflow-y-auto"
             >
               <!-- User message 1 -->
-              <div class="flex items-start space-x-3">
+              <div
+                id="user-msg-1-block"
+                class="user-msg-row flex items-start space-x-3"
+              >
                 <div
                   class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200"
                 >
@@ -165,7 +168,10 @@
               </div>
 
               <!-- User message: birth details -->
-              <div class="flex items-start space-x-3">
+              <div
+                id="birth-block"
+                class="user-msg-row flex items-start space-x-3"
+              >
                 <div
                   class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200"
                 >
@@ -190,12 +196,12 @@
               </div>
 
               <!-- AI response 1 (typed) -->
-              <div class="flex items-start space-x-2">
-                <div class="flex-1 pl-3">
+              <div class="ai-msg-row flex items-start pl-3">
+                <div class="flex-1">
                   <div
                     class="bg-ai-bubble text-slate-800 p-2 px-2 rounded-chat rounded-tr-none shadow-lg"
                   >
-                    <div class="mb-2 overflow-hidden">
+                    <div id="chart-block" class="mb-2 overflow-hidden">
                       <img
                         src="./chart.png"
                         alt="Astrological Chart"
@@ -224,7 +230,7 @@
               <!-- User follow-up (fades in after AI response 1) -->
               <div
                 id="follow-up-block"
-                class="flex items-start space-x-3 opacity-0"
+                class="user-msg-row flex items-start space-x-3 opacity-0"
                 style="transition: opacity 0.5s ease"
               >
                 <div
@@ -251,10 +257,10 @@
               <!-- AI response 2 (typed, fades in after follow-up) -->
               <div
                 id="ai-response-2-block"
-                class="flex items-start space-x-3 opacity-0"
+                class="ai-msg-row flex items-start space-x-3 opacity-0 pl-3"
                 style="transition: opacity 0.5s ease"
               >
-                <div class="flex-1 pl-3">
+                <div class="flex-1">
                   <div
                     class="bg-ai-bubble text-slate-800 p-2 px-2 rounded-chat rounded-tr-none shadow-lg"
                   >
@@ -319,9 +325,61 @@
       <!-- Right side: Content Editor -->
       <aside class="editor-panel">
         <h2 class="editor-title">Content Editor</h2>
-        <p class="text-slate-500 -mt-4 mb-4 text-sm">
+        <p class="text-slate-500 -mt-4 text-sm">
           Edit the text below to see live updates in the mobile view.
         </p>
+
+        <!-- AI Position Toggle -->
+        <div class="toggle-row">
+          <label class="toggle-label">AI Response Position</label>
+          <div class="toggle-container">
+            <span class="toggle-option" id="toggle-label-right">Right</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="ai-position-toggle" checked />
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-option" id="toggle-label-left">Left</span>
+          </div>
+        </div>
+
+        <!-- Visibility Toggles -->
+        <div class="toggle-row">
+          <label class="toggle-label">Show / Hide</label>
+
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-slate-500">Chart Image</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-chart" checked />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-slate-500">CTA Button</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-cta" checked />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-slate-500">Birth Details</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-birth" checked />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-slate-500">User Message 1</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-user-msg-1" checked />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <hr class="border-slate-200" />
 
         <div class="editor-field">
           <label>Page Title</label>

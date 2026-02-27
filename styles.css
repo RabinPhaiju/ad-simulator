@@ -84,6 +84,132 @@
   transform: scale(0.98);
 }
 
+/* ── Toggle Switch ────────────────────────────────────────────────────────── */
+.toggle-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.4rem 0.825rem;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.toggle-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  /* margin-bottom: 0.1rem; */
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.toggle-option {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #94a3b8;
+  transition: color 0.2s;
+}
+
+.toggle-option.active {
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cbd5e1;
+  border-radius: 24px;
+  transition: background-color 0.3s;
+}
+
+.toggle-slider::before {
+  content: "";
+  position: absolute;
+  height: 12px;
+  width: 12px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background-color: #007AFF;
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+  transform: translateX(14px);
+}
+
+/* ── AI Position Swap ─────────────────────────────────────────────────────── */
+/* User messages: default left → swap to right */
+.ai-on-left .user-msg-row {
+  flex-direction: row-reverse;
+  gap: 0.75rem;
+}
+
+/* Remove Tailwind space-x margins (they break with row-reverse) */
+.ai-on-left .user-msg-row > * + * {
+  margin-left: 0;
+}
+
+/* User bubble: flat corner moves from top-left to top-right (towards avatar) */
+.ai-on-left .user-msg-row .rounded-tl-none {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 0;
+}
+
+/* AI messages: default right → swap to left */
+.ai-on-left .ai-msg-row {
+  flex-direction: row-reverse;
+  gap: 0.5rem;
+}
+
+/* Remove Tailwind space-x margins (they break with row-reverse) */
+.ai-on-left .ai-msg-row > * + * {
+  margin-left: 0;
+}
+
+/* AI bubble: flat corner moves from top-right to top-left (towards avatar) */
+.ai-on-left .ai-msg-row .rounded-tr-none {
+  border-top-right-radius: 1rem;
+  border-top-left-radius: 0;
+}
+
+/* AI row padding: swap pl-3 to pr-3 when toggled */
+.ai-on-left .ai-msg-row.pl-3 {
+  padding-left: 0 !important;
+  padding-right: 0.75rem;
+}
+
 
 /* ── Base ──────────────────────────────────────────────────────────────────── */
 body {

@@ -98,9 +98,7 @@
         var chunk = words.slice(index, index + WORDS_PER_STEP).join(' ') + ' ';
         target.insertBefore(document.createTextNode(chunk), cursor);
         
-        const randomDelay = Math.random() < 0.5 ? 0 : 1;
-
-        index += WORDS_PER_STEP + randomDelay;
+        index += WORDS_PER_STEP;
         stepCount++;
         setTimeout(step, STEP_INTERVAL); 
         // Skip auto-scroll for first N steps only if skipScroll is true
@@ -153,6 +151,61 @@
         startSequence();
       });
     }
+
+    // AI position toggle
+    var toggle = document.getElementById("ai-position-toggle");
+    var labelRight = document.getElementById("toggle-label-right");
+    var labelLeft = document.getElementById("toggle-label-left");
+    var messagesList = document.getElementById("messages-list");
+    var aiRow1 = document.querySelector(".ai-msg-row:not(#ai-response-2-block)");
+    var aiRow2 = document.getElementById("ai-response-2-block");
+
+    function setAiSpacing(isLeft) {
+      [aiRow1, aiRow2].forEach(function(row) {
+        if (!row) return;
+        if (isLeft) {
+          row.classList.remove("space-x-2");
+        } else {
+          row.classList.add("space-x-2");
+        }
+      });
+    }
+
+    function updateToggleLabels(isLeft) {
+      if (labelRight) labelRight.className = "toggle-option" + (isLeft ? "" : " active");
+      if (labelLeft) labelLeft.className = "toggle-option" + (isLeft ? " active" : "");
+    }
+
+    // Set initial state: add space-x-2 by default (not toggled)
+    setAiSpacing(false);
+    updateToggleLabels(false);
+
+    if (toggle && messagesList) {
+      toggle.addEventListener("change", function () {
+        if (toggle.checked) {
+          messagesList.classList.add("ai-on-left");
+        } else {
+          messagesList.classList.remove("ai-on-left");
+        }
+        setAiSpacing(toggle.checked);
+        updateToggleLabels(toggle.checked);
+      });
+    }
+
+    // ── Visibility Toggles ──────────────────────────────────────────────────
+    function bindVisibilityToggle(toggleId, elementId) {
+      var toggleEl = document.getElementById(toggleId);
+      var targetEl = document.getElementById(elementId);
+      if (!toggleEl || !targetEl) return;
+      toggleEl.addEventListener("change", function () {
+        targetEl.style.display = toggleEl.checked ? "" : "none";
+      });
+    }
+
+    bindVisibilityToggle("toggle-chart",      "chart-block");
+    bindVisibilityToggle("toggle-cta",        "cta-button");
+    bindVisibilityToggle("toggle-birth",      "birth-block");
+    bindVisibilityToggle("toggle-user-msg-1", "user-msg-1-block");
   }
 
   // ── Animation sequence ───────────────────────────────────────────────────
