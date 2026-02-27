@@ -1,0 +1,438 @@
+<!doctype html>
+<html class="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>PocketPandit AI</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script src="./dailogs.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:wght@700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#007AFF",
+              "background-light": "#F5F5F7",
+              "background-dark": "#1C1C1E",
+              "accent-blue": "#007AFF",
+              "bubble-beige": "#F9F9FB",
+              "bubble-brown": "#8B5E3C",
+            },
+            fontFamily: {
+              display: ["Playfair Display", "serif"],
+              sans: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "12px",
+              chat: "18px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .material-symbols-rounded {
+        font-variation-settings:
+          "FILL" 1,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      body {
+        -webkit-tap-highlight-color: transparent;
+      }
+      /* Hide scrollbar but keep scrollable */
+      #messages-list::-webkit-scrollbar {
+        display: none;
+      }
+      #messages-list {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      /* Typing cursor */
+      .typing-cursor {
+        display: inline-block;
+        width: 2px;
+        height: 1em;
+        background: currentColor;
+        margin-left: 2px;
+        vertical-align: text-bottom;
+        border-radius: 1px;
+        animation: blink 0.75s step-start infinite;
+        opacity: 1;
+        transition: opacity 0.3s;
+      }
+      .typing-cursor.done {
+        animation: none;
+        opacity: 0;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+    </style>
+    <style>
+      body {
+        height: 100dvh;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-sans text-slate-900 dark:text-slate-100 h-screen flex flex-col overflow-hidden"
+  >
+    <main
+      class="flex-1 flex flex-col items-center px-2 pt-4 pb-2 max-w-[380px] mx-auto w-full overflow-hidden"
+    >
+      <!-- Page heading -->
+      <h1
+        class="font-display text-4xl md:text-5xl text-center leading-tight mb-3 flex-shrink-0"
+      >
+        <span class="block text-slate-900 dark:text-white" id="page-title"
+          >Will I get</span
+        >
+        <span class="block text-primary" id="page-subtitle"
+          >Australian visa?</span
+        >
+      </h1>
+
+      <div
+        class="w-full bg-white dark:bg-slate-800 rounded-[32px] border-4 border-primary/20 shadow-xl flex-1 flex flex-col overflow-hidden mb-4"
+      >
+        <!-- App header row -->
+        <div
+          class="flex items-center justify-between px-4 pt-0 pb-0 border-b border-slate-100 dark:border-slate-700 flex-shrink-0"
+        >
+          <!-- Left: Logo -->
+          <img
+            src="./banner_logo.png"
+            alt="Pocket Pandit"
+            class="h-16 w-auto object-contain"
+          />
+
+          <!-- Center: Credits pill -->
+          <div
+            class="flex items-center bg-slate-200 dark:bg-slate-700 rounded-full px-3 py-1.5 space-x-2"
+          >
+            <div
+              class="w-7 h-7 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0 shadow"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="white"
+                class="w-3.5 h-3.5"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+                />
+              </svg>
+            </div>
+            <div class="flex flex-col leading-none">
+              <span
+                class="font-bold text-sm text-slate-900 dark:text-white tracking-tight"
+                >2.0</span
+              >
+              <span
+                class="text-[8px] font-semibold text-slate-500 dark:text-slate-400 tracking-widest uppercase"
+                >Credits</span
+              >
+            </div>
+            <span class="text-slate-500 font-bold text-base leading-none"
+              >+</span
+            >
+          </div>
+
+          <!-- Right: Bell + Avatar -->
+          <div class="flex items-center space-x-2.5">
+            <div class="relative">
+              <span class="material-symbols-rounded text-slate-500 text-2xl"
+                >notifications</span
+              >
+            </div>
+            <div
+              class="w-8 h-8 rounded-full bg-slate-300 border-2 border-slate-400 overflow-hidden flex items-center justify-center"
+            >
+              <img
+                alt="User profile"
+                class="w-full h-full object-cover"
+                src="https://img.freepik.com/free-photo/young-determined-armenian-curlyhaired-female-university-student-listen-carefully-asignment-look-confident-ready-task-cross-hands-chest-smiling-selfassured-standing-white-background_176420-56066.jpg?semt=ais_hybrid&w=740&q=80"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- PocketPandit AI sub-header -->
+        <div
+          id="messages-list"
+          class="flex-1 py-2 px-3 space-y-3 overflow-y-auto"
+        >
+          <div class="flex items-start space-x-3">
+            <div
+              class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200"
+            >
+              <img
+                alt="User profile"
+                class="w-full h-full object-cover"
+                src="https://img.freepik.com/free-photo/young-determined-armenian-curlyhaired-female-university-student-listen-carefully-asignment-look-confident-ready-task-cross-hands-chest-smiling-selfassured-standing-white-background_176420-56066.jpg?semt=ais_hybrid&w=740&q=80"
+              />
+            </div>
+            <div class="space-y-2 max-w-[80%]">
+              <div
+                class="bg-bubble-beige dark:bg-slate-700 p-3 px-4 rounded-chat rounded-tl-none shadow-sm flex items-center space-x-1"
+              >
+                <p
+                  class="text-[15px] leading-relaxed text-slate-700 dark:text-slate-200"
+                >
+                  मेरो अष्ट्रेलियन भिसा कहिले लाग्छ? 😭
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-3">
+            <div
+              class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200"
+            >
+              <img
+                alt="User profile"
+                class="w-full h-full object-cover"
+                src="https://img.freepik.com/free-photo/young-determined-armenian-curlyhaired-female-university-student-listen-carefully-asignment-look-confident-ready-task-cross-hands-chest-smiling-selfassured-standing-white-background_176420-56066.jpg?semt=ais_hybrid&w=740&q=80"
+              />
+            </div>
+            <div class="space-y-2 max-w-[80%]">
+              <div
+                class="bg-bubble-beige dark:bg-slate-700 p-3 px-4 rounded-chat rounded-tl-none shadow-sm"
+              >
+                <p
+                  class="text-[15px] leading-relaxed text-slate-700 dark:text-slate-200 font-medium"
+                >
+                  January 12, 2006, 10am<br />
+                  Kathmandu, Nepal
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-2">
+            <div class="flex-1">
+              <div
+                class="bg-primary text-white p-4 px-2 rounded-chat rounded-tr-none shadow-lg"
+              >
+                <p
+                  id="typing-response"
+                  class="text-[15px] leading-relaxed font-medium"
+                >
+                  <span class="typing-cursor" id="typing-cursor"></span>
+                </p>
+              </div>
+            </div>
+            <div
+              class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200 flex items-center justify-center"
+            >
+              <img
+                alt="AI profile"
+                class="w-10 h-10 object-contain mix-blend-multiply"
+                src="./logo.png"
+              />
+            </div>
+          </div>
+
+          <div
+            id="follow-up-block"
+            class="flex items-start space-x-3 opacity-0"
+            style="transition: opacity 0.5s ease"
+          >
+            <div
+              class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200"
+            >
+              <img
+                alt="User profile"
+                class="w-full h-full object-cover"
+                src="https://img.freepik.com/free-photo/young-determined-armenian-curlyhaired-female-university-student-listen-carefully-asignment-look-confident-ready-task-cross-hands-chest-smiling-selfassured-standing-white-background_176420-56066.jpg?semt=ais_hybrid&w=740&q=80"
+              />
+            </div>
+            <div class="space-y-2 max-w-[80%]">
+              <div
+                class="bg-bubble-beige dark:bg-slate-700 p-3 px-4 rounded-chat rounded-tl-none shadow-sm flex items-center space-x-1"
+              >
+                <p
+                  class="text-[15px] leading-relaxed text-slate-700 dark:text-slate-200"
+                  id="user-msg-2"
+                ></p>
+              </div>
+            </div>
+          </div>
+          <div
+            id="ai-response-2-block"
+            class="flex items-start space-x-3 opacity-0"
+            style="transition: opacity 0.5s ease"
+          >
+            <div class="flex-1">
+              <div
+                class="bg-primary text-white p-2 px-2 rounded-chat rounded-tr-none shadow-lg"
+              >
+                <p
+                  id="typing-response-2"
+                  class="text-[15px] leading-relaxed font-medium"
+                >
+                  <span class="typing-cursor" id="typing-cursor-2"></span>
+                </p>
+              </div>
+            </div>
+            <div
+              class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200 flex items-center justify-center"
+            >
+              <img
+                alt="AI profile"
+                class="w-10 h-10 object-contain mix-blend-multiply"
+                src="./logo.png"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-full flex items-center justify-between px-2"></div>
+      <button
+        id="cta-button"
+        class="w-full bg-primary hover:bg-opacity-90 active:scale-95 transition-all text-white font-bold py-4 rounded-full text-lg shadow-lg"
+      ></button>
+    </main>
+    <script>
+      (function () {
+        const SPEED = 30; // ms per character
+        const DELAY1 = 800; // delay before first animation starts
+        const GAP = 800; // pause between phases
+
+        // Helper: type text into a <p> before a cursor span, then call onDone
+        function typeInto(paragraphId, cursorId, text, onDone) {
+          const target = document.getElementById(paragraphId);
+          const cursor = document.getElementById(cursorId);
+          const chars = [...text];
+          let index = 0;
+          function step() {
+            if (index < chars.length) {
+              target.insertBefore(
+                document.createTextNode(chars[index]),
+                cursor,
+              );
+              index++;
+              scrollChat(); // auto-scroll on every character
+              setTimeout(step, SPEED);
+            } else {
+              cursor.classList.add("done");
+              if (onDone) setTimeout(onDone, GAP);
+            }
+          }
+          step();
+        }
+
+        // Helper: fade in an element
+        function fadeIn(id) {
+          const el = document.getElementById(id);
+          if (el) el.style.opacity = "1";
+        }
+
+        // Helper: scroll messages list to bottom smoothly
+        function scrollChat() {
+          const list = document.getElementById("messages-list");
+          if (list)
+            list.scrollTo({ top: list.scrollHeight, behavior: "smooth" });
+        }
+
+        // Helper to safely set text (skips if element doesn't exist)
+        function setText(id, value) {
+          const el = document.getElementById(id);
+          if (el) el.textContent = value;
+        }
+
+        // ── Inject static text from dailogs.js ──────────────────────────────
+        setText(
+          "page-title",
+          typeof DIALOG_PAGE_TITLE !== "undefined" ? DIALOG_PAGE_TITLE : "",
+        );
+        setText(
+          "page-subtitle",
+          typeof DIALOG_PAGE_SUBTITLE !== "undefined"
+            ? DIALOG_PAGE_SUBTITLE
+            : "",
+        );
+        setText(
+          "chat-header",
+          typeof DIALOG_CHAT_HEADER !== "undefined" ? DIALOG_CHAT_HEADER : "",
+        );
+        setText(
+          "cta-button",
+          typeof DIALOG_CTA_BUTTON !== "undefined" ? DIALOG_CTA_BUTTON : "",
+        );
+        setText(
+          "user-msg-1",
+          typeof DIALOG_USER_MSG_1 !== "undefined" ? DIALOG_USER_MSG_1 : "",
+        );
+        setText(
+          "user-birthdate",
+          typeof DIALOG_USER_BIRTHDATE !== "undefined"
+            ? DIALOG_USER_BIRTHDATE
+            : "",
+        );
+        setText(
+          "user-birthplace",
+          typeof DIALOG_USER_BIRTHPLACE !== "undefined"
+            ? DIALOG_USER_BIRTHPLACE
+            : "",
+        );
+        setText(
+          "user-msg-2",
+          typeof DIALOG_USER_MSG_2 !== "undefined" ? DIALOG_USER_MSG_2 : "",
+        );
+
+        // ── Typing animation text from dailogs.js ────────────────────────────
+        const text1 =
+          typeof DIALOG_AI_RESPONSE_1 !== "undefined"
+            ? DIALOG_AI_RESPONSE_1
+            : "";
+        const text2 =
+          typeof DIALOG_AI_RESPONSE_2 !== "undefined"
+            ? DIALOG_AI_RESPONSE_2
+            : "";
+
+        // Phase 1: type first AI response
+        setTimeout(function () {
+          typeInto("typing-response", "typing-cursor", text1, function () {
+            scrollChat();
+            // Phase 2: show user follow-up bubble
+            fadeIn("follow-up-block");
+            scrollChat();
+            setTimeout(function () {
+              // Phase 3: show second AI response block, then type
+              fadeIn("ai-response-2-block");
+              scrollChat();
+              setTimeout(function () {
+                typeInto(
+                  "typing-response-2",
+                  "typing-cursor-2",
+                  text2,
+                  scrollChat,
+                );
+              }, 400);
+            }, GAP);
+          });
+        }, DELAY1);
+      })();
+    </script>
+  </body>
+</html>
