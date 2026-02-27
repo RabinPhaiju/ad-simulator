@@ -112,4 +112,17 @@ function initEditor(startSequence) {
   bindVisibilityToggle("toggle-cta",        "cta-button");       // CTA button
   bindVisibilityToggle("toggle-birth",      "birth-block");      // Birth details bubble
   bindVisibilityToggle("toggle-user-msg-1", "user-msg-1-block"); // First user message
+
+  // Turn 2 toggle: hides/shows both the follow-up bubble and AI response 2 together
+  var turn2Toggle   = document.getElementById("toggle-turn-2");
+  var followUpBlock = document.getElementById("follow-up-block");
+  var aiBlock2      = document.getElementById("ai-response-2-block");
+
+  if (turn2Toggle) {
+    turn2Toggle.addEventListener("change", function () {
+      var display = turn2Toggle.checked ? "" : "none";
+      if (followUpBlock) followUpBlock.style.display = display;
+      if (aiBlock2)      aiBlock2.style.display      = display;
+    });
+  }
 }

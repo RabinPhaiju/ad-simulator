@@ -285,7 +285,7 @@
               <!-- ── AI response 2 (fades in after follow-up, then typed) ─ -->
               <div
                 id="ai-response-2-block"
-                class="ai-msg-row flex items-start space-x-3 opacity-0 pl-3"
+                class="ai-msg-row flex items-start opacity-0 pl-3"
                 style="transition: opacity 0.5s ease"
               >
                 <div class="flex-1">
@@ -420,6 +420,16 @@
             <span class="text-xs text-slate-500">User Message 1</span>
             <label class="toggle-switch">
               <input type="checkbox" id="toggle-user-msg-1" checked />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-slate-500"
+              >Turn 2 (Follow-up + AI reply)</span
+            >
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-turn-2" checked />
               <span class="toggle-slider"></span>
             </label>
           </div>

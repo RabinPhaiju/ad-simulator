@@ -45,7 +45,12 @@ function scrollChat(force, instant) {
 
   // Only scroll if content overflows below the visible area
   var listVisibleBottom = list.getBoundingClientRect().bottom;
+  // Walk backwards to find the last *visible* child
+  // (display:none elements return zero bounding rect and fool the check)
   var lastChild = list.lastElementChild;
+  while (lastChild && lastChild.style.display === "none") {
+    lastChild = lastChild.previousElementSibling;
+  }
   if (!lastChild && !force) return;
 
   var contentBottom = lastChild ? lastChild.getBoundingClientRect().bottom : 0;
