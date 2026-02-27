@@ -26,6 +26,10 @@
     <link rel="stylesheet" href="./styles/toggles.css" />
     <link rel="stylesheet" href="./styles/chat.css" />
     <link rel="stylesheet" href="./styles/animations.css" />
+    <link rel="stylesheet" href="./styles/recorder.css" />
+
+    <!-- html2canvas: renders a DOM element to a <canvas> (used by recorder.js) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <!-- ── Dialog content (must load before app scripts) ────────────────── -->
     <script src="./js/dialogs.js"></script>
@@ -361,7 +365,33 @@
            RIGHT PANE – Content editor panel
            ══════════════════════════════════════════════════════════════════ -->
       <aside class="editor-panel">
-        <h2 class="editor-title">Content Editor</h2>
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+          "
+        >
+          <h2 class="editor-title" style="margin: 0">Content Editor</h2>
+          <!-- ── Record / Stop buttons ──────────────────────────────────── -->
+          <div class="record-btn-row">
+            <button
+              id="btn-record"
+              class="btn-record"
+              title="Record mobile preview"
+            >
+              <span class="rec-dot"></span> Record
+            </button>
+            <button id="btn-stop" class="btn-stop" title="Stop recording">
+              <span
+                class="rec-dot"
+                style="animation: pulse-rec 1s ease-in-out infinite"
+              ></span>
+              ⏹ <span id="stop-timer-text">00:00</span>
+            </button>
+          </div>
+        </div>
         <p class="text-slate-500 -mt-4 text-sm">
           Edit the text below to see live updates in the mobile view.
         </p>
@@ -532,5 +562,6 @@
     <script src="./js/typing.js"></script>
     <script src="./js/editor.js"></script>
     <script src="./js/app.js"></script>
+    <script src="./js/recorder.js"></script>
   </body>
 </html>

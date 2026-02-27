@@ -109,6 +109,9 @@
     activeTimeouts.push(t1);
   }
 
+  // Expose so recorder.js can restart animation when recording starts
+  window.startSequence = startSequence;
+
   // ── Boot ───────────────────────────────────────────────────────────────────
   injectStaticText();        // Fill static text from DIALOGS
   initEditor(startSequence); // Wire up editor panel (passes restart fn)
