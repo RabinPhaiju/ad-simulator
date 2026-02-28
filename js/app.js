@@ -82,6 +82,11 @@
   // ── Animation sequence ─────────────────────────────────────────────────────
   var activeTimeouts = [];
 
+  // Generation counter — incremented every time startSequence() is called.
+  // Callbacks from a previous (stale) animation check this before dispatching
+  // the end-of-animation event, so they don't prematurely stop a new recording.
+  var sequenceGen = 0;
+
   /** Cancel all pending animation timeouts and remove stale typing indicators. */
   function clearTimeouts() {
     activeTimeouts.forEach(clearTimeout);
@@ -98,6 +103,12 @@
   function startSequence() {
     clearTimeouts();
     userScrolledUp = false; // Reset scroll override (from scroll.js)
+
+    // Capture this generation — any callback from a previous run that still
+    // fires via typeWords' own internal timers will see a mismatched gen
+    // and skip the animationSequenceEnd dispatch.
+    sequenceGen++;
+    var myGen = sequenceGen;
 
     // ── Reset typing areas ──────────────────────────────────────────────────
     var r1 = document.getElementById("typing-response");
@@ -120,10 +131,12 @@
     // ── Phase 1: Type first AI response ─────────────────────────────────────
     var t1 = setTimeout(function () {
       typeWords("typing-response", "typing-cursor", text1, function () {
+        if (sequenceGen !== myGen) return; // stale — a newer sequence started
         scrollChat(true);
 
         // ── Phase 2: Show "..." typing dots, then reveal follow-up ────────
         showUserTypingThenReveal("follow-up-block", 800, function () {
+          if (sequenceGen !== myGen) return;
           scrollChat(true);
 
           var t2 = setTimeout(function () {
@@ -133,8 +146,12 @@
 
             var t3 = setTimeout(function () {
               typeWords("typing-response-2", "typing-cursor-2", text2, function () {
+                if (sequenceGen !== myGen) return; // stale
                 scrollChat(true);
                 setText("credits-value", "1.2");
+
+                // Signal recorder to auto-stop (only from the current sequence)
+                document.dispatchEvent(new CustomEvent("animationSequenceEnd"));
               }, false);
             }, 400);
             activeTimeouts.push(t3);

@@ -12,6 +12,7 @@
 // on the right panel — never inside the captured region.
 //
 // Auto-restarts the chat animation when Record is clicked.
+// Auto-stops recording when the animation sequence ends.
 // Auto-downloads the file when Stop is clicked (.mp4 on Safari, .webm elsewhere).
 // =============================================================================
 
@@ -24,6 +25,7 @@
   var timerInterval  = null;
   var elapsedSeconds = 0;
   var activeStream   = null;   // kept so we can stop all tracks on Stop
+  var autoStopBound  = null;   // bound auto-stop listener ref for cleanup
 
   // Fallback canvas (used only if getDisplayMedia unavailable)
   var fallbackCanvas = document.createElement("canvas");
@@ -109,38 +111,51 @@
     setTimeout(function () { URL.revokeObjectURL(url); }, 8000);
   }
 
-// ── Countdown before recording ────────────────────────────────────────────────
+  // ── Auto-stop ─────────────────────────────────────────────────────────────────
+  // app.js dispatches "animationSequenceEnd" on document when all typing is done.
+  // We listen for that event and auto-stop recording after a small grace period.
 
-  var countdownInterval = null;
+  function onAnimationEnd() {
+    console.log("[recorder] animation ended — auto-stopping in 800ms");
+    removeAutoStop();
+    setTimeout(function () {
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        stopRecording();
+      }
+    }, 800);
+  }
 
-  function stopCountdown() {
-    if (countdownInterval) {
-      clearInterval(countdownInterval);
-      countdownInterval = null;
+  function addAutoStop() {
+    removeAutoStop(); // ensure no duplicates
+    autoStopBound = onAnimationEnd;
+    document.addEventListener("animationSequenceEnd", autoStopBound);
+    console.log("[recorder] auto-stop listener added");
+  }
+
+  function removeAutoStop() {
+    if (autoStopBound) {
+      document.removeEventListener("animationSequenceEnd", autoStopBound);
+      autoStopBound = null;
     }
   }
 
-  function startCountdown(stream) {
-    var count = 5;
+  // ── Begin recording (no countdown) ─────────────────────────────────────────
+
+  function beginRecording(stream) {
+    // Register auto-stop listener
+    addAutoStop();
+
+    // Show stop button immediately so the user knows it's starting
     btnRecord.style.display = "none";
     btnStop.style.display   = "flex";
-    if (timerDisplay) timerDisplay.textContent = "in " + count + "s";
+    if (timerDisplay) timerDisplay.textContent = "Starting…";
 
-    stopCountdown();
-
-    countdownInterval = setInterval(function () {
-      count--;
-      if (count > 0) {
-        if (timerDisplay) timerDisplay.textContent = "in " + count + "s";
-      } else {
-        stopCountdown();
-        
-        // 1. Restart the animation now that permission is granted and countdown finished
-        if (window.startSequence) window.startSequence();
-        
-        // 2. Begin writing to file
-        startMediaRecorder(stream);
-      }
+    // Give the stream 1 second to stabilise (replaces old 5s countdown).
+    // Then use the same order that always worked:
+    //   startSequence() first  →  startMediaRecorder() second.
+    setTimeout(function () {
+      if (window.startSequence) window.startSequence();
+      startMediaRecorder(stream);
     }, 1000);
   }
 
@@ -175,8 +190,8 @@
           return track.cropTo(cropTarget);
         })
         .then(function () {
-          // Cropping succeeded. Start the countdown.
-          startCountdown(stream);
+          // Cropping succeeded — start recording immediately.
+          beginRecording(stream);
         })
         .catch(function (err) {
           // Crop failed. Stop the stream and fallback.
@@ -243,8 +258,8 @@
     // Start drawing to canvas
     captureFrame();
     
-    // Start countdown before recording from the canvas stream
-    startCountdown(stream);
+    // Start recording immediately
+    beginRecording(stream);
   }
 
   // ── Shared MediaRecorder setup ────────────────────────────────────────────────
@@ -274,7 +289,6 @@
   // ── Public start / stop ───────────────────────────────────────────────────────
 
   function startRecording() {
-    // 1. Begin capture (prompts user). Once granted, countdown starts, THEN animation starts.
     if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
       startWithDisplayMedia();
     } else if (typeof html2canvas !== "undefined") {
@@ -285,7 +299,8 @@
   }
 
   function stopRecording() {
-    stopCountdown();
+    // Remove auto-stop listener
+    removeAutoStop();
 
     // Stop canvas fallback loop if active
     if (isRecordingCanvas) { 
