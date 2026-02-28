@@ -125,4 +125,30 @@ function initEditor(startSequence) {
       if (aiBlock2)      aiBlock2.style.display      = display;
     });
   }
+
+  // ── Typing Speed Slider ───────────────────────────────────────────────────────
+  var speedSlider = document.getElementById("typing-speed-slider");
+  var speedLabel  = document.getElementById("typing-speed-label");
+
+  function applySpeed(idx) {
+    var p = CONFIG.SPEED_PRESETS && CONFIG.SPEED_PRESETS[idx];
+    if (!p) return;
+    CONFIG.WORDS_PER_STEP = p.words;
+    CONFIG.STEP_INTERVAL  = p.interval;
+    if (speedLabel) speedLabel.textContent = p.label;
+    if (speedSlider) {
+      var pct = (idx / (speedSlider.max || 4)) * 100;
+      speedSlider.style.background =
+        "linear-gradient(to right,#007AFF 0%,#007AFF " + pct +
+        "%,#e2e8f0 " + pct + "%,#e2e8f0 100%)";
+    }
+  }
+
+  if (speedSlider) {
+    speedSlider.value = 2;
+    applySpeed(2);
+    speedSlider.addEventListener("input", function () {
+      applySpeed(parseInt(speedSlider.value, 10));
+    });
+  }
 }

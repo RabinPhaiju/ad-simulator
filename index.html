@@ -402,6 +402,24 @@
           Unchecked = AI on RIGHT
           JS in editor.js applies/removes .ai-on-left on #messages-list.
         -->
+
+        <!-- ── Typing Speed Slider ────────────────────────────────────────── -->
+        <div class="toggle-row">
+          <label class="toggle-label">Typing Speed</label>
+          <div class="speed-slider-labels">
+            <span>Slow</span><span>Thoughtful</span><span>Normal</span
+            ><span>Brisk</span><span>Hype</span>
+          </div>
+          <input
+            type="range"
+            id="typing-speed-slider"
+            min="0"
+            max="4"
+            step="1"
+            value="2"
+          />
+          <div class="speed-current-label" id="typing-speed-label">Normal</div>
+        </div>
         <div class="toggle-row">
           <label class="toggle-label">AI Response Position</label>
           <div class="toggle-container">

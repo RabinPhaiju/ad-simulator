@@ -24,4 +24,13 @@ var CONFIG = {
    * visible space in the chat container.
    */
   SCROLL_SKIP_STEPS: 12,
+
+  /** Typing speed presets for slider (index 0–4). */
+  SPEED_PRESETS: [
+    { label: "Slow",       words: 1, interval: 450 },
+    { label: "Thoughtful", words: 2, interval: 300 },
+    { label: "Normal",     words: 3, interval: 250 },
+    { label: "Brisk",      words: 4, interval: 160 },
+    { label: "Hype",       words: 6, interval: 70  },
+  ],
 };

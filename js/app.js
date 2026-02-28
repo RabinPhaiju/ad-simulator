@@ -41,13 +41,54 @@
   // Expose so editor.js can call it when a field changes
   window.injectStaticText = injectStaticText;
 
+  // ── User Typing Indicator (follow-up only) ─────────────────────────────────
+  /**
+   * Shows a temporary "..." typing bubble before a user message, then reveals it.
+   * @param {string}   blockId  - ID of the block to reveal.
+   * @param {number}   duration - How long the dots show (ms).
+   * @param {Function} onDone   - Called after the block is revealed.
+   */
+  function showUserTypingThenReveal(blockId, duration, onDone) {
+    var block = document.getElementById(blockId);
+    if (!block) { if (onDone) onDone(); return; }
+
+    var list = document.getElementById("messages-list");
+    var indicator = document.createElement("div");
+    indicator.className = "user-typing-indicator user-msg-row flex items-start space-x-3";
+    indicator.innerHTML =
+      '<div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-slate-200">' +
+        '<img alt="User" class="w-full h-full object-cover" src="./person.avif" />' +
+      '</div>' +
+      '<div class="bg-user-bubble p-2 px-4 rounded-chat rounded-tl-none shadow-sm">' +
+        '<span class="user-typing-dots"><span></span><span></span><span></span></span>' +
+      '</div>';
+
+    if (list && block.parentNode === list) {
+      list.insertBefore(indicator, block);
+    } else if (list) {
+      list.appendChild(indicator);
+    }
+    scrollChat(true);
+
+    var t = setTimeout(function () {
+      if (indicator.parentNode) indicator.parentNode.removeChild(indicator);
+      block.style.opacity = "1";
+      scrollChat(true);
+      if (onDone) onDone();
+    }, duration);
+    activeTimeouts.push(t);
+  }
+
   // ── Animation sequence ─────────────────────────────────────────────────────
   var activeTimeouts = [];
 
-  /** Cancel all pending animation timeouts. */
+  /** Cancel all pending animation timeouts and remove stale typing indicators. */
   function clearTimeouts() {
     activeTimeouts.forEach(clearTimeout);
     activeTimeouts = [];
+    document.querySelectorAll(".user-typing-indicator").forEach(function (el) {
+      if (el.parentNode) el.parentNode.removeChild(el);
+    });
   }
 
   /**
@@ -77,32 +118,30 @@
     var text2 = D.AI_RESPONSE_2 || "";
 
     // ── Phase 1: Type first AI response ─────────────────────────────────────
-    // skipScroll = true → delay auto-scroll for the first N word chunks
-    // so the view doesn't jump while there is still visible space.
     var t1 = setTimeout(function () {
       typeWords("typing-response", "typing-cursor", text1, function () {
-        scrollChat(true); // Force scroll once response is complete
-
-        // ── Phase 2: Show user follow-up bubble ───────────────────────────
-        fadeIn("follow-up-block");
         scrollChat(true);
 
-        var t2 = setTimeout(function () {
-          // ── Phase 3: Show second AI response, then type it ───────────────
-          fadeIn("ai-response-2-block");
+        // ── Phase 2: Show "..." typing dots, then reveal follow-up ────────
+        showUserTypingThenReveal("follow-up-block", 800, function () {
           scrollChat(true);
 
-          var t3 = setTimeout(function () {
-            // skipScroll = false → scroll immediately on every step
-            typeWords("typing-response-2", "typing-cursor-2", text2, function () {
-              scrollChat(true);          // Final force scroll
-              setText("credits-value", "1.2"); // Deduct credits
-            }, false);
-          }, 400);
-          activeTimeouts.push(t3);
+          var t2 = setTimeout(function () {
+            // ── Phase 3: Show second AI response, then type it ─────────────
+            fadeIn("ai-response-2-block");
+            scrollChat(true);
 
-        }, CONFIG.GAP);
-        activeTimeouts.push(t2);
+            var t3 = setTimeout(function () {
+              typeWords("typing-response-2", "typing-cursor-2", text2, function () {
+                scrollChat(true);
+                setText("credits-value", "1.2");
+              }, false);
+            }, 400);
+            activeTimeouts.push(t3);
+
+          }, CONFIG.GAP);
+          activeTimeouts.push(t2);
+        });
 
       }, true); // ← skipScroll for first response
     }, CONFIG.DELAY1);
