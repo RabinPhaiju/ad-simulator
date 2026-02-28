@@ -134,6 +134,15 @@
         if (sequenceGen !== myGen) return; // stale — a newer sequence started
         scrollChat(true);
 
+        // If Turn 2 is disabled, the sequence ends here
+        var turn2Toggle = document.getElementById("toggle-turn-2");
+        var turn2On = !turn2Toggle || turn2Toggle.checked;
+
+        if (!turn2On) {
+          document.dispatchEvent(new CustomEvent("animationSequenceEnd"));
+          return;
+        }
+
         // ── Phase 2: Show "..." typing dots, then reveal follow-up ────────
         showUserTypingThenReveal("follow-up-block", 800, function () {
           if (sequenceGen !== myGen) return;
