@@ -233,4 +233,35 @@ function initEditor(startSequence) {
     chatSizeSlider.addEventListener("input", updateChatSize);
     updateChatSize();
   }
+
+  // ── Mobile Menu Toggle Logic ───────────────────────────────────────────────
+  var menuToggle = document.getElementById("menu-toggle");
+  var editorPanel = document.querySelector(".editor-panel");
+  var backdrop = document.getElementById("editor-backdrop");
+
+  if (menuToggle && editorPanel && backdrop) {
+    function toggleMenu() {
+      var isOpen = editorPanel.classList.toggle("open");
+      backdrop.classList.toggle("show", isOpen);
+
+      // Update toggle icon
+      var icon = menuToggle.querySelector(".material-symbols-rounded");
+      if (icon) {
+        icon.textContent = isOpen ? "close" : "menu";
+      }
+    }
+
+    menuToggle.addEventListener("click", toggleMenu);
+    backdrop.addEventListener("click", toggleMenu);
+
+    // Close menu when restart animation is clicked (to show the result)
+    var restartBtn = document.getElementById("restart-animation");
+    if (restartBtn) {
+      restartBtn.addEventListener("click", function () {
+        if (editorPanel.classList.contains("open")) {
+          toggleMenu();
+        }
+      });
+    }
+  }
 }

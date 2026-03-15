@@ -49,8 +49,16 @@
            ══════════════════════════════════════════════════════════════════ -->
       <div class="mobile-view-wrapper">
         <main
-          class="flex-1 flex flex-col items-center px-2 pt-4 pb-2 max-w-[380px] mx-auto w-full overflow-hidden"
+          class="flex-1 flex flex-col items-center px-2 pt-4 pb-2 max-w-[380px] mx-auto w-full overflow-hidden relative"
         >
+          <!-- ── Hamburger Menu Toggle (Mobile Only) ─────────────────────── -->
+          <button
+            id="menu-toggle"
+            class="absolute top-4 right-4 z-50 p-2 bg-white/80 backdrop-blur shadow-sm rounded-lg border border-slate-200 text-slate-600 md:hidden flex items-center justify-center"
+            aria-label="Toggle editor"
+          >
+            <span class="material-symbols-rounded">menu</span>
+          </button>
           <!-- ── Page heading ─────────────────────────────────────────────── -->
           <h1
             class="font-display text-4xl md:text-5xl text-center leading-tight mb-3 flex-shrink-0"
@@ -649,6 +657,8 @@
         </div>
       </aside>
       <!-- /editor-panel -->
+      <!-- Editor Panel Backdrop (Mobile Only) -->
+      <div id="editor-backdrop" class="editor-backdrop"></div>
     </div>
     <!-- /app-container -->
 

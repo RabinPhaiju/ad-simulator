@@ -82,6 +82,10 @@
 
     var main = document.querySelector(".mobile-view-wrapper main");
     if (main) main.classList.remove("is-recording");
+
+    // Show hamburger menu again
+    var menuToggle = document.getElementById("menu-toggle");
+    if (menuToggle) menuToggle.style.display = "";
   }
 
   function startTimer() {
@@ -145,10 +149,27 @@
     // Register auto-stop listener
     addAutoStop();
 
+    // Close mobile editor if open
+    var editorPanel = document.querySelector(".editor-panel");
+    var backdrop = document.getElementById("editor-backdrop");
+    var menuToggle = document.getElementById("menu-toggle");
+    if (editorPanel && editorPanel.classList.contains("open")) {
+      editorPanel.classList.remove("open");
+      if (backdrop) backdrop.classList.remove("show");
+      if (menuToggle) {
+        var icon = menuToggle.querySelector(".material-symbols-rounded");
+        if (icon) icon.textContent = "menu";
+      }
+    }
+
     // Show stop button immediately so the user knows it's starting
     btnRecord.style.display = "none";
     btnStop.style.display   = "flex";
     if (timerDisplay) timerDisplay.textContent = "Starting…";
+
+    // Hide hamburger menu immediately so it's not in the 1s delay or recording
+    var menuToggle = document.getElementById("menu-toggle");
+    if (menuToggle) menuToggle.style.display = "none";
 
     // Give the stream 1 second to stabilise (replaces old 5s countdown).
     // Then use the same order that always worked:
@@ -278,7 +299,7 @@
       download(recordedChunks, mime);
     };
 
-    mediaRecorder.start(500);
+    mediaRecorder.start(200);
     showRecordingUI();
     startTimer();
 
