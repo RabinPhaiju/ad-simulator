@@ -143,13 +143,8 @@
     }
   }
 
-  // ── Begin recording (no countdown) ─────────────────────────────────────────
-
-  function beginRecording(stream) {
-    // Register auto-stop listener
-    addAutoStop();
-
-    // Close mobile editor if open
+  /** Close the mobile menu / sidebar if it is currently open */
+  function closeEditorIfOpen() {
     var editorPanel = document.querySelector(".editor-panel");
     var backdrop = document.getElementById("editor-backdrop");
     var menuToggle = document.getElementById("menu-toggle");
@@ -161,6 +156,13 @@
         if (icon) icon.textContent = "menu";
       }
     }
+  }
+
+  // ── Begin recording (no countdown) ─────────────────────────────────────────
+
+  function beginRecording(stream) {
+    // Register auto-stop listener
+    addAutoStop();
 
     // Show stop button immediately so the user knows it's starting
     btnRecord.style.display = "none";
@@ -310,13 +312,19 @@
   // ── Public start / stop ───────────────────────────────────────────────────────
 
   function startRecording() {
-    if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
-      startWithDisplayMedia();
-    } else if (typeof html2canvas !== "undefined") {
-      startWithCanvas();
-    } else {
-      alert("Recording is not supported in this browser.");
-    }
+    // 1. Close the editor panel immediately to stabilize the layout
+    closeEditorIfOpen();
+
+    // 2. Wait for the CSS transition (0.3s) to finish so the element is in its final position
+    setTimeout(function () {
+      if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+        startWithDisplayMedia();
+      } else if (typeof html2canvas !== "undefined") {
+        startWithCanvas();
+      } else {
+        alert("Recording is not supported in this browser.");
+      }
+    }, 350);
   }
 
   function stopRecording() {

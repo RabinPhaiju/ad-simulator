@@ -7,7 +7,7 @@
 
 var CONFIG = {
   /** Delay (ms) before the first typing animation starts after page load. */
-  DELAY1: 800,
+  DELAY1: 1400,
 
   /** Pause (ms) between conversation phases (e.g. after AI response 1 ends). */
   GAP: 800,
