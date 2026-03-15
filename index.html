@@ -518,7 +518,25 @@
 
         <!-- ── Page content fields ─────────────────────────────────────── -->
         <div class="editor-field">
-          <label>Page Title</label>
+          <div class="flex justify-between items-center mb-1">
+            <label style="margin-bottom: 0">Page Title</label>
+            <div class="flex items-center gap-2">
+              <span
+                class="text-[10px] text-slate-500 font-medium"
+                id="title-size-display"
+                >36px</span
+              >
+              <input
+                type="range"
+                id="title-size-slider"
+                min="16"
+                max="72"
+                step="1"
+                value="36"
+                class="w-20 accent-primary cursor-pointer"
+              />
+            </div>
+          </div>
           <input
             type="text"
             data-dialog="PAGE_TITLE"
@@ -526,7 +544,25 @@
           />
         </div>
         <div class="editor-field">
-          <label>Page Subtitle</label>
+          <div class="flex justify-between items-center mb-1">
+            <label style="margin-bottom: 0">Page Subtitle</label>
+            <div class="flex items-center gap-2">
+              <span
+                class="text-[10px] text-slate-500 font-medium"
+                id="subtitle-size-display"
+                >36px</span
+              >
+              <input
+                type="range"
+                id="subtitle-size-slider"
+                min="16"
+                max="72"
+                step="1"
+                value="36"
+                class="w-20 accent-primary cursor-pointer"
+              />
+            </div>
+          </div>
           <input
             type="text"
             data-dialog="PAGE_SUBTITLE"
@@ -553,6 +589,27 @@
         <hr class="border-slate-200" />
 
         <!-- ── User conversation fields ───────────────────────────────── -->
+        <div class="editor-field">
+          <div class="flex justify-between items-center mb-1">
+            <label style="margin-bottom: 0">Chat Font Size</label>
+            <div class="flex items-center gap-2">
+              <span
+                class="text-[10px] text-slate-500 font-medium"
+                id="chat-size-display"
+                >15px</span
+              >
+              <input
+                type="range"
+                id="chat-size-slider"
+                min="10"
+                max="30"
+                step="1"
+                value="15"
+                class="w-20 accent-primary cursor-pointer"
+              />
+            </div>
+          </div>
+        </div>
         <div class="editor-field">
           <label>User Message 1</label>
           <textarea data-dialog="USER_MSG_1" rows="2"></textarea>

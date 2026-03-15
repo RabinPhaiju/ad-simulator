@@ -180,4 +180,57 @@ function initEditor(startSequence) {
     'img[alt="Pocket Pandit"], img[alt="AI profile"]',
   );
   handleImageUpload("image-upload-chart", 'img[alt="Astrological Chart"]');
+
+  // ── Font Size Sliders ───────────────────────────────────────────────────────
+  function setupFontSizeSlider(sliderId, displayId, targetElementId) {
+    var slider = document.getElementById(sliderId);
+    var display = document.getElementById(displayId);
+    var target = document.getElementById(targetElementId);
+
+    if (slider && display && target) {
+      function updateSize() {
+        display.textContent = slider.value + "px";
+        target.style.fontSize = slider.value + "px";
+        target.style.lineHeight = "1.2";
+      }
+      slider.addEventListener("input", updateSize);
+      updateSize();
+    }
+  }
+
+  setupFontSizeSlider("title-size-slider", "title-size-display", "page-title");
+  setupFontSizeSlider(
+    "subtitle-size-slider",
+    "subtitle-size-display",
+    "page-subtitle",
+  );
+
+  // ── Chat Font Size Slider ───────────────────────────────────────────────────
+  var chatSizeSlider = document.getElementById("chat-size-slider");
+  var chatSizeDisplay = document.getElementById("chat-size-display");
+
+  if (chatSizeSlider && chatSizeDisplay) {
+    function updateChatSize() {
+      var size = chatSizeSlider.value + "px";
+      chatSizeDisplay.textContent = size;
+
+      var chatElements = [
+        document.getElementById("user-msg-1"),
+        document.querySelector("#birth-block p"),
+        document.getElementById("typing-response"),
+        document.getElementById("user-msg-2"),
+        document.getElementById("typing-response-2"),
+      ];
+
+      chatElements.forEach(function (el) {
+        if (el) {
+          el.style.fontSize = size;
+          el.style.lineHeight = "1.5"; // Ensure readability at larger sizes
+        }
+      });
+    }
+
+    chatSizeSlider.addEventListener("input", updateChatSize);
+    updateChatSize();
+  }
 }
