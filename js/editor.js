@@ -17,7 +17,6 @@
  * @param {Function} startSequence - The animation restart function from app.js.
  */
 function initEditor(startSequence) {
-
   // ── Live text editing ────────────────────────────────────────────────────────
   // Every <input> / <textarea> with data-dialog="KEY" is pre-filled from DIALOGS
   // and updates DIALOGS[KEY] live as the user types, triggering a DOM re-inject.
@@ -39,9 +38,9 @@ function initEditor(startSequence) {
   }
 
   // ── AI Response Position toggle ──────────────────────────────────────────────
-  var posToggle    = document.getElementById("ai-position-toggle");
-  var labelRight   = document.getElementById("toggle-label-right");
-  var labelLeft    = document.getElementById("toggle-label-left");
+  var posToggle = document.getElementById("ai-position-toggle");
+  var labelRight = document.getElementById("toggle-label-right");
+  var labelLeft = document.getElementById("toggle-label-left");
   var messagesList = document.getElementById("messages-list");
 
   // Both AI response row elements (spacing must differ on toggle)
@@ -72,8 +71,10 @@ function initEditor(startSequence) {
    * @param {boolean} isLeft
    */
   function updatePositionLabels(isLeft) {
-    if (labelRight) labelRight.className = "toggle-option" + (isLeft ? ""       : " active");
-    if (labelLeft)  labelLeft.className  = "toggle-option" + (isLeft ? " active" : "");
+    if (labelRight)
+      labelRight.className = "toggle-option" + (isLeft ? "" : " active");
+    if (labelLeft)
+      labelLeft.className = "toggle-option" + (isLeft ? " active" : "");
   }
 
   // Apply initial state (toggle starts checked = AI on left by default)
@@ -108,39 +109,42 @@ function initEditor(startSequence) {
     });
   }
 
-  bindVisibilityToggle("toggle-chart",      "chart-block");      // Chart image
-  bindVisibilityToggle("toggle-cta",        "cta-button");       // CTA button
-  bindVisibilityToggle("toggle-birth",      "birth-block");      // Birth details bubble
+  bindVisibilityToggle("toggle-chart", "chart-block"); // Chart image
+  bindVisibilityToggle("toggle-cta", "cta-button"); // CTA button
+  bindVisibilityToggle("toggle-birth", "birth-block"); // Birth details bubble
   bindVisibilityToggle("toggle-user-msg-1", "user-msg-1-block"); // First user message
 
   // Turn 2 toggle: hides/shows both the follow-up bubble and AI response 2 together
-  var turn2Toggle   = document.getElementById("toggle-turn-2");
+  var turn2Toggle = document.getElementById("toggle-turn-2");
   var followUpBlock = document.getElementById("follow-up-block");
-  var aiBlock2      = document.getElementById("ai-response-2-block");
+  var aiBlock2 = document.getElementById("ai-response-2-block");
 
   if (turn2Toggle) {
     turn2Toggle.addEventListener("change", function () {
       var display = turn2Toggle.checked ? "" : "none";
       if (followUpBlock) followUpBlock.style.display = display;
-      if (aiBlock2)      aiBlock2.style.display      = display;
+      if (aiBlock2) aiBlock2.style.display = display;
     });
   }
 
   // ── Typing Speed Slider ───────────────────────────────────────────────────────
   var speedSlider = document.getElementById("typing-speed-slider");
-  var speedLabel  = document.getElementById("typing-speed-label");
+  var speedLabel = document.getElementById("typing-speed-label");
 
   function applySpeed(idx) {
     var p = CONFIG.SPEED_PRESETS && CONFIG.SPEED_PRESETS[idx];
     if (!p) return;
     CONFIG.WORDS_PER_STEP = p.words;
-    CONFIG.STEP_INTERVAL  = p.interval;
+    CONFIG.STEP_INTERVAL = p.interval;
     if (speedLabel) speedLabel.textContent = p.label;
     if (speedSlider) {
       var pct = (idx / (speedSlider.max || 4)) * 100;
       speedSlider.style.background =
-        "linear-gradient(to right,#007AFF 0%,#007AFF " + pct +
-        "%,#e2e8f0 " + pct + "%,#e2e8f0 100%)";
+        "linear-gradient(to right,#007AFF 0%,#007AFF " +
+        pct +
+        "%,#e2e8f0 " +
+        pct +
+        "%,#e2e8f0 100%)";
     }
   }
 
@@ -151,4 +155,29 @@ function initEditor(startSequence) {
       applySpeed(parseInt(speedSlider.value, 10));
     });
   }
+
+  // ── Image Uploads ───────────────────────────────────────────────────────────
+  function handleImageUpload(inputId, selector) {
+    var input = document.getElementById(inputId);
+    if (!input) return;
+    input.addEventListener("change", function (e) {
+      if (e.target.files && e.target.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (event) {
+          var images = document.querySelectorAll(selector);
+          images.forEach(function (img) {
+            img.src = event.target.result;
+          });
+        };
+        reader.readAsDataURL(e.target.files[0]);
+      }
+    });
+  }
+
+  handleImageUpload("image-upload-user", 'img[alt="User profile"]');
+  handleImageUpload(
+    "image-upload-logo",
+    'img[alt="Pocket Pandit"], img[alt="AI profile"]',
+  );
+  handleImageUpload("image-upload-chart", 'img[alt="Astrological Chart"]');
 }
